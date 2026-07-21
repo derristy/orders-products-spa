@@ -193,11 +193,11 @@ const defaultSymbol = computed(
 
 @media (max-width: 600px) {
   .order-row:not(.order-row--compact) {
-    grid-template-columns: 40px 1fr 1fr 34px;
+    grid-template-columns: 64px 1fr auto;
     grid-template-areas:
-      'icon title title trash'
-      'count dates total total';
-    gap: 10px 12px;
+      'icon title trash'
+      'count dates total';
+    gap: 12px 12px;
     padding: 14px 16px;
   }
   .order-row:not(.order-row--compact) .order-row__icon {
@@ -215,13 +215,18 @@ const defaultSymbol = computed(
     grid-area: count;
     text-align: left;
   }
+  .order-row:not(.order-row--compact) .order-row__count-label {
+    font-size: 11px;
+  }
   .order-row:not(.order-row--compact) .order-row__dates {
     grid-area: dates;
     text-align: left;
+    align-self: center;
   }
   .order-row:not(.order-row--compact) .order-row__totals {
     grid-area: total;
     text-align: right;
+    align-self: center;
   }
 }
 </style>
