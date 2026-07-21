@@ -9,6 +9,8 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
 const { weekday, date, time } = useClock()
 const { count } = useSessionCounter()
 
+defineEmits<{ (e: 'toggle-nav'): void }>()
+
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
@@ -33,6 +35,8 @@ function logout() {
 
 <template>
   <header class="topmenu">
+    <button class="topmenu__burger" aria-label="menu" @click="$emit('toggle-nav')">☰</button>
+
     <div class="topmenu__brand">
       <span class="topmenu__logo">◍</span>
       <span class="topmenu__title">INVENTORY</span>
@@ -43,7 +47,7 @@ function logout() {
     </div>
 
     <div class="topmenu__meta">
-      <LanguageSwitcher />
+      <LanguageSwitcher class="topmenu__lang" />
       <div class="topmenu__sessions" :title="$t('top.sessions')">
         <span class="topmenu__dot" />
         {{ count }}
@@ -74,6 +78,16 @@ function logout() {
   align-items: center;
   gap: 24px;
   padding: 0 32px;
+}
+.topmenu__burger {
+  display: none;
+  border: none;
+  background: none;
+  font-size: 22px;
+  color: var(--c-heading);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
 }
 .topmenu__brand {
   display: flex;
@@ -179,10 +193,21 @@ function logout() {
     padding: 12px 16px;
     gap: 12px;
   }
+  .topmenu__burger {
+    display: block;
+  }
   .topmenu__search {
     order: 3;
     max-width: none;
     flex-basis: 100%;
+  }
+  .topmenu__meta {
+    gap: 14px;
+  }
+  /* Save space on phones — language lives in Settings, full date is secondary */
+  .topmenu__lang,
+  .topmenu__datetime {
+    display: none;
   }
 }
 </style>

@@ -156,4 +156,21 @@ const emit = defineEmits<{
 .product-line__delete:hover {
   color: var(--c-danger);
 }
+
+@media (max-width: 768px) {
+  .order-details {
+    padding: 22px 18px;
+  }
+  .order-details__close {
+    top: 10px;
+    right: 10px;
+  }
+  .product-line {
+    gap: 10px;
+    grid-template-columns: 10px 32px 1fr auto 22px;
+  }
+  .product-line__title {
+    font-size: 14px;
+  }
+}
 </style>
