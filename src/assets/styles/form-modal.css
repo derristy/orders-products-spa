@@ -2,10 +2,12 @@
   position: fixed;
   inset: 0;
   background: rgba(60, 70, 90, 0.55);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
   padding: 16px;
+  overflow-y: auto;
 }
 .fmodal__dialog {
   position: relative;
@@ -42,6 +44,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
 }
 .fmodal__row {
   display: flex;
@@ -49,6 +52,9 @@
 }
 .fmodal__row > .fmodal__field {
   flex: 1;
+}
+.fmodal__input {
+  width: 100%;
 }
 .fmodal__label {
   font-size: 13px;
@@ -102,4 +108,22 @@
 }
 .fmodal__btn--primary:hover {
   background: var(--c-primary-dark);
+}
+
+@media (max-width: 520px) {
+  .fmodal__dialog {
+    padding: 22px 18px;
+  }
+  /* Stack paired fields (e.g. Email + Role) on narrow screens */
+  .fmodal__row {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .fmodal__actions {
+    gap: 10px;
+  }
+  .fmodal__btn {
+    flex: 1;
+    padding: 11px 12px;
+  }
 }

@@ -24,10 +24,12 @@ const emit = defineEmits<{ (e: 'confirm'): void; (e: 'cancel'): void }>()
   position: fixed;
   inset: 0;
   background: rgba(60, 70, 90, 0.55);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
   padding: 16px;
+  overflow-y: auto;
 }
 .confirm-dialog__box {
   background: var(--c-surface);
