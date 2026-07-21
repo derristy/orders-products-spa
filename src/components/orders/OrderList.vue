@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import draggable from 'vuedraggable'
 import type { Order, Product } from '@/types'
 import type { NewProduct } from '@/api'
 import OrderRow from './OrderRow.vue'
@@ -14,6 +15,17 @@ const orders = computed<Order[]>(() => store.getters['orders/visible'])
 const activeId = computed<number | null>(() => store.state.orders.activeOrderId)
 const activeOrder = computed<Order | null>(() => store.getters['orders/activeOrder'])
 const expanded = computed(() => activeOrder.value !== null)
+const searchActive = computed(() => !!(store.state.ui.search || '').trim())
+
+// Local mirror for drag-and-drop reordering of the full list.
+const localOrders = ref<Order[]>([])
+watch(orders, (v) => (localOrders.value = [...v]), { immediate: true })
+async function onReorder() {
+  await store.dispatch(
+    'orders/reorder',
+    localOrders.value.map((o) => o.id),
+  )
+}
 
 const orderToDelete = ref<Order | null>(null)
 const showAddProduct = ref(false)
@@ -48,12 +60,31 @@ async function deleteProduct(product: Product) {
 <template>
   <div class="order-list" :class="{ 'order-list--expanded': expanded }">
     <div class="order-list__col">
-      <TransitionGroup name="list" tag="div" class="order-list__rows">
+      <!-- Full list: drag the ☰ handle to reorder (disabled while searching) -->
+      <draggable
+        v-if="!expanded"
+        v-model="localOrders"
+        item-key="id"
+        handle=".order-row__icon"
+        :disabled="searchActive"
+        :animation="180"
+        tag="div"
+        class="order-list__rows"
+        ghost-class="order-row--ghost"
+        @end="onReorder"
+      >
+        <template #item="{ element }">
+          <OrderRow :order="element" @select="select" @delete="askDelete" />
+        </template>
+      </draggable>
+
+      <!-- Compact list shown while an order is open -->
+      <TransitionGroup v-else name="list" tag="div" class="order-list__rows">
         <OrderRow
           v-for="order in orders"
           :key="order.id"
           :order="order"
-          :compact="expanded"
+          compact
           :active="order.id === activeId"
           @select="select"
           @delete="askDelete"

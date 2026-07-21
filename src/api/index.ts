@@ -57,6 +57,8 @@ export const api = {
   createOrder: (data: { title: string; description?: string }) =>
     request<Order>('/orders', { method: 'POST', body: JSON.stringify(data) }),
   deleteOrder: (id: number) => request<void>(`/orders/${id}`, { method: 'DELETE' }),
+  reorderOrders: (ids: number[]) =>
+    request<Order[]>('/orders/reorder', { method: 'PUT', body: JSON.stringify({ ids }) }),
   addProduct: (orderId: number, data: NewProduct) =>
     request<Product>(`/orders/${orderId}/products`, {
       method: 'POST',
