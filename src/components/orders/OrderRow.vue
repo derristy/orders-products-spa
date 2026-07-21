@@ -111,9 +111,6 @@ const defaultSymbol = computed(
 .order-row--ghost {
   opacity: 0.4;
 }
-.order-row--compact .order-row__icon {
-  cursor: pointer;
-}
 .order-row__title {
   font-size: 18px;
   font-weight: 500;
