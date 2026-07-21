@@ -16,7 +16,7 @@ const filtered = computed<Product[]>(() => store.getters['products/filtered'])
       </TransitionGroup>
     </div>
     <p v-if="filtered.length === 0" class="product-list__empty">
-      Нет продуктов по выбранным фильтрам.
+      {{ $t('list.empty') }}
     </p>
   </div>
 </template>

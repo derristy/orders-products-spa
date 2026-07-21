@@ -1,9 +1,22 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { useClock } from '@/composables/useClock'
 import { useSessionCounter } from '@/composables/useSessionCounter'
+import LanguageSwitcher from './LanguageSwitcher.vue'
 
 const { weekday, date, time } = useClock()
 const { count } = useSessionCounter()
+
+const store = useStore()
+const router = useRouter()
+const username = computed<string>(() => store.getters['auth/username'])
+
+function logout() {
+  store.dispatch('auth/logout')
+  router.push({ name: 'login' })
+}
 </script>
 
 <template>
@@ -14,11 +27,12 @@ const { count } = useSessionCounter()
     </div>
 
     <div class="topmenu__search">
-      <input type="text" class="topmenu__input" placeholder="Поиск" />
+      <input type="text" class="topmenu__input" :placeholder="$t('top.search')" />
     </div>
 
     <div class="topmenu__meta">
-      <div class="topmenu__sessions" title="Активных сессий приложения">
+      <LanguageSwitcher />
+      <div class="topmenu__sessions" :title="$t('top.sessions')">
         <span class="topmenu__dot" />
         {{ count }}
       </div>
@@ -29,6 +43,11 @@ const { count } = useSessionCounter()
       <div class="topmenu__time">
         <span class="topmenu__clock">◷</span>
         {{ time }}
+      </div>
+
+      <div class="topmenu__user">
+        <span class="topmenu__username">{{ username }}</span>
+        <button class="topmenu__logout" :title="$t('auth.logout')" @click="logout">⎋</button>
       </div>
     </div>
   </header>
@@ -111,6 +130,34 @@ const { count } = useSessionCounter()
   gap: 6px;
   color: var(--c-primary-dark);
   font-weight: 600;
+}
+.topmenu__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 20px;
+  border-left: 1px solid var(--c-border);
+}
+.topmenu__username {
+  font-weight: 600;
+  color: var(--c-heading);
+}
+.topmenu__logout {
+  border: none;
+  background: #f2f4f8;
+  color: var(--c-text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 15px;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.topmenu__logout:hover {
+  background: var(--c-danger);
+  color: #fff;
 }
 
 @media (max-width: 768px) {

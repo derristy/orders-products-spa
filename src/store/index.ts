@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { orders } from './modules/orders'
 import { products } from './modules/products'
+import { auth } from './modules/auth'
 import { persistFilters } from './persist'
 
 export interface RootState {
@@ -12,6 +13,7 @@ export const store = createStore<RootState>({
   modules: {
     orders,
     products,
+    auth,
   },
   plugins: [persistFilters],
 })

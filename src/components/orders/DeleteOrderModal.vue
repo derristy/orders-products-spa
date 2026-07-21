@@ -12,10 +12,10 @@ const emit = defineEmits<{
 <template>
   <div class="confirm" @click.self="emit('cancel')">
     <div class="confirm__dialog" role="dialog" aria-modal="true">
-      <button class="confirm__close" title="Закрыть" @click="emit('cancel')">✕</button>
+      <button class="confirm__close" :title="$t('del.close')" @click="emit('cancel')">✕</button>
 
       <div class="confirm__head">
-        <h3 class="confirm__title">Вы уверены, что хотите удалить этот приход?</h3>
+        <h3 class="confirm__title">{{ $t('del.title') }}</h3>
       </div>
 
       <div class="confirm__body">
@@ -24,15 +24,17 @@ const emit = defineEmits<{
           <span class="confirm__photo" aria-hidden="true">🖥</span>
           <div class="confirm__info">
             <span class="confirm__product">{{ order.title }}</span>
-            <span class="confirm__sn">Продуктов: {{ order.products.length }}</span>
+            <span class="confirm__sn">{{ $t('del.productsCount') }}: {{ order.products.length }}</span>
           </div>
         </div>
       </div>
 
       <div class="confirm__footer">
-        <button class="confirm__btn confirm__btn--ghost" @click="emit('cancel')">ОТМЕНИТЬ</button>
+        <button class="confirm__btn confirm__btn--ghost" @click="emit('cancel')">
+          {{ $t('del.cancel') }}
+        </button>
         <button class="confirm__btn confirm__btn--danger" @click="emit('confirm')">
-          🗑 УДАЛИТЬ
+          🗑 {{ $t('del.confirm') }}
         </button>
       </div>
     </div>

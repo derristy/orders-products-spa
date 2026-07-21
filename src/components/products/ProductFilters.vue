@@ -22,17 +22,17 @@ function onSpec(e: Event) {
 <template>
   <div class="filters">
     <label class="filters__field">
-      <span class="filters__label">Тип:</span>
+      <span class="filters__label">{{ $t('filters.type') }}:</span>
       <select class="filters__select" :value="typeFilter ?? ''" @change="onType">
-        <option value="">Все типы</option>
+        <option value="">{{ $t('filters.allTypes') }}</option>
         <option v-for="t in types" :key="t" :value="t">{{ t }}</option>
       </select>
     </label>
 
     <label class="filters__field">
-      <span class="filters__label">Спецификация:</span>
+      <span class="filters__label">{{ $t('filters.spec') }}:</span>
       <select class="filters__select" :value="specFilter ?? ''" @change="onSpec">
-        <option value="">Все</option>
+        <option value="">{{ $t('filters.all') }}</option>
         <option v-for="s in specs" :key="s" :value="s">{{ s }}</option>
       </select>
     </label>

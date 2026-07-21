@@ -34,7 +34,7 @@ const defaultSymbol = computed(
 
     <div class="order-row__count">
       <span class="order-row__count-num">{{ productsCount }}</span>
-      <span class="order-row__count-label">Продукта</span>
+      <span class="order-row__count-label">{{ $t('orders.productsLabel') }}</span>
     </div>
 
     <div class="order-row__dates">
@@ -56,7 +56,7 @@ const defaultSymbol = computed(
     <button
       v-if="!compact"
       class="order-row__delete"
-      title="Удалить приход"
+      :title="$t('details.deleteProduct')"
       @click.stop="emit('delete', order)"
     >
       🗑

@@ -1,42 +1,64 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useStore } from 'vuex'
 
 interface NavItem {
-  label: string
+  key: string
   to?: string
 }
 
 // Only Orders and Products are real routes per the task; the rest mirror the
 // mockup's menu but are placeholders.
 const items: NavItem[] = [
-  { label: 'Приход', to: '/orders' },
-  { label: 'Группы' },
-  { label: 'Продукты', to: '/products' },
-  { label: 'Пользователи' },
-  { label: 'Настройки' },
+  { key: 'nav.orders', to: '/orders' },
+  { key: 'nav.groups' },
+  { key: 'nav.products', to: '/products' },
+  { key: 'nav.users' },
+  { key: 'nav.settings' },
 ]
+
+const store = useStore()
+const username = computed<string>(() => store.getters['auth/username'] || 'guest')
+// Deterministic male portrait per user (falls back to the gradient if it can't load).
+const avatarIndex = computed(() => {
+  let hash = 0
+  for (const ch of username.value) hash = (hash + ch.charCodeAt(0)) % 100
+  return hash
+})
+const avatarUrl = computed(
+  () => `https://randomuser.me/api/portraits/men/${avatarIndex.value}.jpg`,
+)
+const avatarFailed = ref(false)
 </script>
 
 <template>
   <aside class="sidebar">
     <div class="sidebar__profile">
       <div class="sidebar__avatar">
+        <img
+          v-if="!avatarFailed"
+          class="sidebar__avatar-img"
+          :src="avatarUrl"
+          alt=""
+          @error="avatarFailed = true"
+        />
         <span class="sidebar__gear">⚙</span>
       </div>
     </div>
 
     <nav class="sidebar__nav">
-      <template v-for="item in items" :key="item.label">
+      <template v-for="item in items" :key="item.key">
         <RouterLink
           v-if="item.to"
           :to="item.to"
           class="sidebar__link"
           active-class="sidebar__link--active"
         >
-          {{ item.label }}
+          {{ $t(item.key) }}
         </RouterLink>
         <span v-else class="sidebar__link sidebar__link--disabled">
-          {{ item.label }}
+          {{ $t(item.key) }}
         </span>
       </template>
     </nav>
@@ -63,6 +85,14 @@ const items: NavItem[] = [
   background: linear-gradient(135deg, #d7dbe6, #b9c0d0);
   border: 3px solid var(--c-surface);
   box-shadow: var(--shadow-card);
+}
+.sidebar__avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .sidebar__gear {
   position: absolute;

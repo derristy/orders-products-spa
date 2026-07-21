@@ -8,12 +8,14 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 
 <template>
   <aside class="order-details">
-    <button class="order-details__close" title="Закрыть" @click="emit('close')">✕</button>
+    <button class="order-details__close" :title="$t('details.close')" @click="emit('close')">
+      ✕
+    </button>
 
     <h2 class="order-details__title">{{ order.title }}</h2>
 
     <button class="order-details__add">
-      <span class="order-details__add-icon">＋</span> Добавить продукт
+      <span class="order-details__add-icon">＋</span> {{ $t('details.addProduct') }}
     </button>
 
     <ul class="order-details__list">
@@ -27,8 +29,8 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <span class="product-line__title">{{ product.title }}</span>
           <span class="product-line__sn">SN-{{ product.serialNumber }}</span>
         </div>
-        <span class="product-line__status">Свободен</span>
-        <button class="product-line__delete" title="Удалить продукт">🗑</button>
+        <span class="product-line__status">{{ $t('details.free') }}</span>
+        <button class="product-line__delete" :title="$t('details.deleteProduct')">🗑</button>
       </li>
     </ul>
   </aside>

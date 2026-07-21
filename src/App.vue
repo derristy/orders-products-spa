@@ -1,17 +1,32 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import TheSidebar from '@/components/layout/TheSidebar.vue'
 import TopMenu from '@/components/layout/TopMenu.vue'
+
+const { locale } = useI18n()
+const route = useRoute()
+const isPublic = computed(() => route.meta.public === true)
 </script>
 
 <template>
-  <div class="layout">
+  <!-- Public pages (login) render without the app chrome -->
+  <RouterView v-if="isPublic" v-slot="{ Component }">
+    <Transition name="fade" mode="out-in">
+      <component :is="Component" />
+    </Transition>
+  </RouterView>
+
+  <!-- Authenticated app layout -->
+  <div v-else class="layout">
     <TheSidebar class="layout__sidebar" />
     <div class="layout__main">
       <TopMenu class="layout__top" />
       <main class="layout__content">
         <RouterView v-slot="{ Component }">
           <Transition name="fade" mode="out-in">
-            <component :is="Component" />
+            <component :is="Component" :key="locale" />
           </Transition>
         </RouterView>
       </main>

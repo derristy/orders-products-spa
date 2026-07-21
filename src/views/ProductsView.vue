@@ -14,7 +14,9 @@ onMounted(() => {
 
 <template>
   <section class="products">
-    <h1 class="page-title">Продукты <span class="page-title__count">/ {{ count }}</span></h1>
+    <h1 class="page-title">
+      {{ $t('products.title') }} <span class="page-title__count">/ {{ count }}</span>
+    </h1>
     <ProductFilters />
     <ProductList />
   </section>

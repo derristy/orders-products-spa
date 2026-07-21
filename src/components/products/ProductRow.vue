@@ -26,10 +26,10 @@ const otherPrice = computed(() => props.product.price.find((p) => !p.isDefault))
     </div>
 
     <div class="product-row__cell product-row__status" :class="{ 'is-off': !available }">
-      {{ available ? 'Свободен' : 'В ремонте' }}
+      {{ available ? $t('product.free') : $t('product.inRepair') }}
     </div>
 
-    <div class="product-row__cell">{{ product.isNew ? 'новый' : 'Б / У' }}</div>
+    <div class="product-row__cell">{{ product.isNew ? $t('product.new') : $t('product.used') }}</div>
 
     <div class="product-row__cell product-row__price">
       <span v-if="otherPrice" class="product-row__muted">
@@ -42,10 +42,12 @@ const otherPrice = computed(() => props.product.price.find((p) => !p.isDefault))
 
     <div class="product-row__cell product-row__guarantee">
       <span class="product-row__muted">
-        с {{ formatShort(product.guarantee.start) }} · {{ formatLong(product.guarantee.start) }}
+        {{ $t('product.from') }} {{ formatShort(product.guarantee.start) }} ·
+        {{ formatLong(product.guarantee.start) }}
       </span>
       <span class="product-row__muted">
-        по {{ formatShort(product.guarantee.end) }} · {{ formatLong(product.guarantee.end) }}
+        {{ $t('product.to') }} {{ formatShort(product.guarantee.end) }} ·
+        {{ formatLong(product.guarantee.end) }}
       </span>
     </div>
 
@@ -58,7 +60,7 @@ const otherPrice = computed(() => props.product.price.find((p) => !p.isDefault))
       <span>{{ formatLong(product.date) }}</span>
     </div>
 
-    <button class="product-row__delete" title="Удалить продукт">🗑</button>
+    <button class="product-row__delete" :title="$t('details.deleteProduct')">🗑</button>
   </article>
 </template>
 

@@ -14,8 +14,10 @@ onMounted(() => {
 <template>
   <section class="orders">
     <header class="orders__head">
-      <button class="orders__add" title="Добавить приход">＋</button>
-      <h1 class="page-title">Приходы <span class="page-title__count">/ {{ count }}</span></h1>
+      <button class="orders__add" :title="$t('orders.add')">＋</button>
+      <h1 class="page-title">
+        {{ $t('orders.title') }} <span class="page-title__count">/ {{ count }}</span>
+      </h1>
     </header>
 
     <OrderList />
