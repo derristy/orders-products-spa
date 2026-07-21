@@ -3,6 +3,11 @@ dist
 dist-ssr
 *.local
 .DS_Store
+
+# SQLite database (data lives on a volume, not in git)
+*.sqlite
+*.sqlite-journal
+/server/data/
 .env
 .env.*
 !.env.example
