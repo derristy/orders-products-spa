@@ -10,6 +10,7 @@ import {
   getProducts,
   addOrder,
   removeOrder,
+  reorderOrders,
   addProduct,
   removeProduct,
   listOf,
@@ -66,6 +67,12 @@ app.post('/api/orders', auth, (req, res) => {
   const { title, description } = req.body || {}
   if (!title || !title.trim()) return res.status(422).json({ message: 'Title is required' })
   res.status(201).json(addOrder({ title: title.trim(), description }))
+})
+
+app.put('/api/orders/reorder', auth, (req, res) => {
+  const ids = (req.body && req.body.ids) || []
+  if (!Array.isArray(ids)) return res.status(422).json({ message: 'ids must be an array' })
+  res.json(reorderOrders(ids.map(Number)))
 })
 
 app.delete('/api/orders/:id', auth, (req, res) => {

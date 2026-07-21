@@ -30,6 +30,10 @@ export const orders: Module<OrdersState, RootState> = {
     setItems(state, items: Order[]) {
       state.items = items
     },
+    reorder(state, ids: number[]) {
+      const byId = new Map(state.items.map((o) => [o.id, o]))
+      state.items = ids.map((id) => byId.get(id)).filter((o): o is Order => !!o)
+    },
     setLoading(state, value: boolean) {
       state.loading = value
     },
@@ -70,6 +74,15 @@ export const orders: Module<OrdersState, RootState> = {
     async remove({ commit }, id: number) {
       await api.deleteOrder(id)
       commit('removeOrder', id)
+    },
+    async reorder({ commit, state }, ids: number[]) {
+      const previous = state.items.map((o) => o.id)
+      commit('reorder', ids) // optimistic
+      try {
+        await api.reorderOrders(ids)
+      } catch {
+        commit('reorder', previous) // revert on failure
+      }
     },
     async addProduct({ commit }, payload: { orderId: number; data: NewProduct }) {
       const product = await api.addProduct(payload.orderId, payload.data)

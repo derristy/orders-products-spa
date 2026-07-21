@@ -132,6 +132,23 @@ export const removeOrder = (id) => {
   return db.orders.length < before
 }
 
+// Reorders orders to match the given array of ids (unknown ids ignored,
+// missing ones appended in their current order).
+export const reorderOrders = (ids) => {
+  const byId = new Map(db.orders.map((o) => [o.id, o]))
+  const next = []
+  for (const id of ids) {
+    const o = byId.get(id)
+    if (o) {
+      next.push(o)
+      byId.delete(id)
+    }
+  }
+  for (const o of byId.values()) next.push(o)
+  db.orders = next
+  return db.orders
+}
+
 export const addProduct = (orderId, data) => {
   const order = db.orders.find((o) => o.id === orderId)
   if (!order) return null
