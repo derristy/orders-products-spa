@@ -1,0 +1,57 @@
+:root {
+  /* Brand palette (matches Inventory mockups) */
+  --c-primary: #8bc53f;
+  --c-primary-dark: #7cb518;
+  --c-danger: #e94b4b;
+  --c-text: #4a4a5a;
+  --c-text-muted: #a7adc0;
+  --c-heading: #3a3a4a;
+  --c-border: #e6e9f0;
+  --c-bg: #eef1f5;
+  --c-surface: #ffffff;
+  --c-sidebar: #ffffff;
+
+  --sidebar-w: 200px;
+  --topbar-h: 74px;
+  --radius: 6px;
+  --shadow-card: 0 2px 12px rgba(60, 70, 90, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--c-text);
+  background: var(--c-bg);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Route transition (used in App.vue) */
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
