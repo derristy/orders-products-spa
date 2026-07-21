@@ -20,4 +20,10 @@ setUnauthorizedHandler(() => {
   }
 })
 
-createApp(App).use(store).use(router).use(i18n).mount('#app')
+const app = createApp(App).use(store).use(router).use(i18n)
+
+// Mount only after the router resolved the initial route, so the correct
+// layout (public vs authenticated) renders on the first tick. Otherwise the
+// authenticated layout + its Socket.io connection would flash on /login and
+// get torn down mid-handshake ("WebSocket is closed before…").
+router.isReady().then(() => app.mount('#app'))
