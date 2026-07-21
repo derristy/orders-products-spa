@@ -1,14 +1,24 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import type { Product } from '@/types'
 import ProductRow from './ProductRow.vue'
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 
 const store = useStore()
+const { t } = useI18n()
 const filtered = computed<Product[]>(() => store.getters['products/filtered'])
 
-function remove(product: Product) {
-  store.dispatch('products/remove', { orderId: product.order, productId: product.id })
+const toDelete = ref<Product | null>(null)
+
+async function confirmDelete() {
+  if (!toDelete.value) return
+  await store.dispatch('products/remove', {
+    orderId: toDelete.value.order,
+    productId: toDelete.value.id,
+  })
+  toDelete.value = null
 }
 </script>
 
@@ -20,13 +30,22 @@ function remove(product: Product) {
           v-for="product in filtered"
           :key="product.id"
           :product="product"
-          @delete="remove"
+          @delete="toDelete = $event"
         />
       </TransitionGroup>
     </div>
     <p v-if="filtered.length === 0" class="product-list__empty">
       {{ $t('list.empty') }}
     </p>
+
+    <Transition name="fade">
+      <ConfirmDialog
+        v-if="toDelete"
+        :message="t('product.confirmDelete')"
+        @confirm="confirmDelete"
+        @cancel="toDelete = null"
+      />
+    </Transition>
   </div>
 </template>
 
