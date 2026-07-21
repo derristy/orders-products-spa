@@ -60,9 +60,9 @@ async function deleteProduct(product: Product) {
 <template>
   <div class="order-list" :class="{ 'order-list--expanded': expanded }">
     <div class="order-list__col">
-      <!-- Full list: drag the ☰ handle to reorder (disabled while searching) -->
+      <!-- Drag the ☰ handle to reorder (works in both full and compact views;
+           disabled only while searching) -->
       <draggable
-        v-if="!expanded"
         v-model="localOrders"
         item-key="id"
         handle=".order-row__icon"
@@ -74,22 +74,15 @@ async function deleteProduct(product: Product) {
         @end="onReorder"
       >
         <template #item="{ element }">
-          <OrderRow :order="element" @select="select" @delete="askDelete" />
+          <OrderRow
+            :order="element"
+            :compact="expanded"
+            :active="element.id === activeId"
+            @select="select"
+            @delete="askDelete"
+          />
         </template>
       </draggable>
-
-      <!-- Compact list shown while an order is open -->
-      <TransitionGroup v-else name="list" tag="div" class="order-list__rows">
-        <OrderRow
-          v-for="order in orders"
-          :key="order.id"
-          :order="order"
-          compact
-          :active="order.id === activeId"
-          @select="select"
-          @delete="askDelete"
-        />
-      </TransitionGroup>
     </div>
 
     <Transition name="panel">
