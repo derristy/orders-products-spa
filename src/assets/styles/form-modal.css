@@ -1,0 +1,105 @@
+.fmodal {
+  position: fixed;
+  inset: 0;
+  background: rgba(60, 70, 90, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.fmodal__dialog {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: var(--c-surface);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  padding: 28px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.fmodal__close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+  color: var(--c-text-muted);
+  cursor: pointer;
+}
+.fmodal__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c-heading);
+  margin: 0 0 4px;
+}
+.fmodal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fmodal__row {
+  display: flex;
+  gap: 14px;
+}
+.fmodal__row > .fmodal__field {
+  flex: 1;
+}
+.fmodal__label {
+  font-size: 13px;
+  color: var(--c-text-muted);
+}
+.fmodal__input {
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+}
+.fmodal__input:focus {
+  border-color: var(--c-primary);
+}
+.fmodal__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--c-text);
+  cursor: pointer;
+}
+.fmodal__error {
+  color: var(--c-danger);
+  font-size: 13px;
+  margin: 0;
+}
+.fmodal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+.fmodal__btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  border-radius: var(--radius);
+  padding: 10px 22px;
+}
+.fmodal__btn--ghost {
+  background: #f2f4f8;
+  color: var(--c-text);
+}
+.fmodal__btn--primary {
+  background: var(--c-primary);
+  color: #fff;
+}
+.fmodal__btn--primary:hover {
+  background: var(--c-primary-dark);
+}
