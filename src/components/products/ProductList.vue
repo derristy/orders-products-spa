@@ -6,13 +6,22 @@ import ProductRow from './ProductRow.vue'
 
 const store = useStore()
 const filtered = computed<Product[]>(() => store.getters['products/filtered'])
+
+function remove(product: Product) {
+  store.dispatch('products/remove', { orderId: product.order, productId: product.id })
+}
 </script>
 
 <template>
   <div class="product-list">
     <div class="product-list__scroll">
       <TransitionGroup name="list" tag="div" class="product-list__rows">
-        <ProductRow v-for="product in filtered" :key="product.id" :product="product" />
+        <ProductRow
+          v-for="product in filtered"
+          :key="product.id"
+          :product="product"
+          @delete="remove"
+        />
       </TransitionGroup>
     </div>
     <p v-if="filtered.length === 0" class="product-list__empty">

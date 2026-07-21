@@ -41,3 +41,18 @@ export interface OrderTotal {
   symbol: string
   value: number
 }
+
+/** Product group (directory). */
+export interface Group {
+  id: number
+  name: string
+  description: string
+}
+
+/** Application user (directory). */
+export interface User {
+  id: number
+  name: string
+  email: string
+  role: string
+}

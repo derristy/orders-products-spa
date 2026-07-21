@@ -1,26 +1,37 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import OrderList from '@/components/orders/OrderList.vue'
+import CreateOrderModal from '@/components/orders/CreateOrderModal.vue'
 
 const store = useStore()
 const count = computed<number>(() => store.getters['orders/count'])
+const showCreate = ref(false)
 
 onMounted(() => {
   if (store.state.orders.items.length === 0) store.dispatch('orders/fetch')
 })
+
+async function create(data: { title: string; description: string }) {
+  await store.dispatch('orders/create', data)
+  showCreate.value = false
+}
 </script>
 
 <template>
   <section class="orders">
     <header class="orders__head">
-      <button class="orders__add" :title="$t('orders.add')">＋</button>
+      <button class="orders__add" :title="$t('orders.add')" @click="showCreate = true">＋</button>
       <h1 class="page-title">
         {{ $t('orders.title') }} <span class="page-title__count">/ {{ count }}</span>
       </h1>
     </header>
 
     <OrderList />
+
+    <Transition name="fade">
+      <CreateOrderModal v-if="showCreate" @create="create" @cancel="showCreate = false" />
+    </Transition>
   </section>
 </template>
 
@@ -54,5 +65,13 @@ onMounted(() => {
 .page-title__count {
   color: var(--c-text-muted);
   font-weight: 400;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

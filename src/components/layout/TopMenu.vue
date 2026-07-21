@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useClock } from '@/composables/useClock'
 import { useSessionCounter } from '@/composables/useSessionCounter'
 import LanguageSwitcher from './LanguageSwitcher.vue'
@@ -10,8 +10,20 @@ const { weekday, date, time } = useClock()
 const { count } = useSessionCounter()
 
 const store = useStore()
+const route = useRoute()
 const router = useRouter()
 const username = computed<string>(() => store.getters['auth/username'])
+
+const search = computed({
+  get: () => store.state.ui.search,
+  set: (v: string) => store.commit('ui/setSearch', v),
+})
+
+// Reset the search box when navigating between sections.
+watch(
+  () => route.name,
+  () => store.commit('ui/setSearch', ''),
+)
 
 function logout() {
   store.dispatch('auth/logout')
@@ -27,7 +39,7 @@ function logout() {
     </div>
 
     <div class="topmenu__search">
-      <input type="text" class="topmenu__input" :placeholder="$t('top.search')" />
+      <input v-model="search" type="text" class="topmenu__input" :placeholder="$t('top.search')" />
     </div>
 
     <div class="topmenu__meta">

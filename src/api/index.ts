@@ -1,4 +1,4 @@
-import type { Order, Product } from '@/types'
+import type { Order, Product, Group, User } from '@/types'
 
 // In dev, Vite proxies /api -> the Node server (see vite.config.ts).
 // In production the frontend is served by the same Node server.
@@ -36,6 +36,15 @@ export interface LoginResponse {
   user: { username: string }
 }
 
+export interface NewProduct {
+  title: string
+  type: string
+  serialNumber: string
+  isNew: boolean
+  priceUsd: number
+  priceUah: number
+}
+
 export const api = {
   login: (username: string, password: string) =>
     request<LoginResponse>('/auth/login', {
@@ -45,5 +54,29 @@ export const api = {
   getOrders: () => request<Order[]>('/orders'),
   getProducts: (type?: string) =>
     request<Product[]>(`/products${type ? `?type=${encodeURIComponent(type)}` : ''}`),
+  createOrder: (data: { title: string; description?: string }) =>
+    request<Order>('/orders', { method: 'POST', body: JSON.stringify(data) }),
   deleteOrder: (id: number) => request<void>(`/orders/${id}`, { method: 'DELETE' }),
+  addProduct: (orderId: number, data: NewProduct) =>
+    request<Product>(`/orders/${orderId}/products`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  deleteProduct: (orderId: number, productId: number) =>
+    request<void>(`/orders/${orderId}/products/${productId}`, { method: 'DELETE' }),
+
+  // Directories (groups, users)
+  getGroups: () => request<Group[]>('/groups'),
+  createGroup: (data: Omit<Group, 'id'>) =>
+    request<Group>('/groups', { method: 'POST', body: JSON.stringify(data) }),
+  updateGroup: (id: number, data: Omit<Group, 'id'>) =>
+    request<Group>(`/groups/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteGroup: (id: number) => request<void>(`/groups/${id}`, { method: 'DELETE' }),
+
+  getUsers: () => request<User[]>('/users'),
+  createUser: (data: Omit<User, 'id'>) =>
+    request<User>('/users', { method: 'POST', body: JSON.stringify(data) }),
+  updateUser: (id: number, data: Omit<User, 'id'>) =>
+    request<User>(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteUser: (id: number) => request<void>(`/users/${id}`, { method: 'DELETE' }),
 }

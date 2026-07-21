@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import type { Order } from '@/types'
+import type { Order, Product } from '@/types'
 
 defineProps<{ order: Order }>()
 
-const emit = defineEmits<{ (e: 'close'): void }>()
+const emit = defineEmits<{
+  (e: 'close'): void
+  (e: 'add-product'): void
+  (e: 'delete-product', product: Product): void
+}>()
 </script>
 
 <template>
@@ -14,7 +18,7 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 
     <h2 class="order-details__title">{{ order.title }}</h2>
 
-    <button class="order-details__add">
+    <button class="order-details__add" @click="emit('add-product')">
       <span class="order-details__add-icon">＋</span> {{ $t('details.addProduct') }}
     </button>
 
@@ -30,7 +34,16 @@ const emit = defineEmits<{ (e: 'close'): void }>()
           <span class="product-line__sn">SN-{{ product.serialNumber }}</span>
         </div>
         <span class="product-line__status">{{ $t('details.free') }}</span>
-        <button class="product-line__delete" :title="$t('details.deleteProduct')">🗑</button>
+        <button
+          class="product-line__delete"
+          :title="$t('details.deleteProduct')"
+          @click="emit('delete-product', product)"
+        >
+          🗑
+        </button>
+      </li>
+      <li v-if="order.products.length === 0" class="product-line product-line--empty">
+        {{ $t('details.addProduct') }} →
       </li>
     </ul>
   </aside>

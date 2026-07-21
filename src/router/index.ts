@@ -22,6 +22,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/ProductsView.vue'),
     meta: { title: 'Продукты' },
   },
+  {
+    path: '/groups',
+    name: 'groups',
+    component: () => import('@/views/GroupsView.vue'),
+    meta: { title: 'Группы' },
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: () => import('@/views/UsersView.vue'),
+    meta: { title: 'Пользователи' },
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/views/SettingsView.vue'),
+    meta: { title: 'Настройки' },
+  },
   { path: '/:pathMatch(.*)*', redirect: '/orders' },
 ]
 

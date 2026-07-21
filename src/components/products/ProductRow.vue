@@ -6,6 +6,8 @@ import { formatAmount } from '@/utils/money'
 
 const props = defineProps<{ product: Product }>()
 
+const emit = defineEmits<{ (e: 'delete', product: Product): void }>()
+
 // Availability is not part of the dataset — derived for display variety.
 const available = computed(() => props.product.id % 3 !== 0)
 const defaultPrice = computed(
@@ -60,7 +62,13 @@ const otherPrice = computed(() => props.product.price.find((p) => !p.isDefault))
       <span>{{ formatLong(product.date) }}</span>
     </div>
 
-    <button class="product-row__delete" :title="$t('details.deleteProduct')">🗑</button>
+    <button
+      class="product-row__delete"
+      :title="$t('details.deleteProduct')"
+      @click="emit('delete', product)"
+    >
+      🗑
+    </button>
   </article>
 </template>
 

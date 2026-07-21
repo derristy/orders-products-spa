@@ -7,8 +7,10 @@ import router from './router'
 import store from './store'
 import i18n, { currentLocale } from './i18n'
 import { setUnauthorizedHandler } from './api'
+import { initAccent } from './utils/theme'
 
 document.documentElement.setAttribute('lang', currentLocale())
+initAccent()
 
 // On any 401 from the API — clear session and send the user to login.
 setUnauthorizedHandler(() => {

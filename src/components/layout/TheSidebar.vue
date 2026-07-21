@@ -12,10 +12,10 @@ interface NavItem {
 // mockup's menu but are placeholders.
 const items: NavItem[] = [
   { key: 'nav.orders', to: '/orders' },
-  { key: 'nav.groups' },
+  { key: 'nav.groups', to: '/groups' },
   { key: 'nav.products', to: '/products' },
-  { key: 'nav.users' },
-  { key: 'nav.settings' },
+  { key: 'nav.users', to: '/users' },
+  { key: 'nav.settings', to: '/settings' },
 ]
 
 const store = useStore()
@@ -43,7 +43,7 @@ const avatarFailed = ref(false)
           alt=""
           @error="avatarFailed = true"
         />
-        <span class="sidebar__gear">⚙</span>
+        <RouterLink to="/settings" class="sidebar__gear" :title="$t('nav.settings')">⚙</RouterLink>
       </div>
     </div>
 

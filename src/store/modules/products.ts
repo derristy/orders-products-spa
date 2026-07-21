@@ -22,12 +22,17 @@ export const products: Module<ProductsState, RootState> = {
     count: (state) => state.items.length,
     types: (state) => [...new Set(state.items.map((p) => p.type))],
     specifications: (state) => [...new Set(state.items.map((p) => p.specification))],
-    filtered: (state) =>
-      state.items.filter(
+    filtered: (state, _getters, rootState) => {
+      const search = ((rootState as { ui?: { search?: string } }).ui?.search ?? '')
+        .trim()
+        .toLowerCase()
+      return state.items.filter(
         (p) =>
           (!state.typeFilter || p.type === state.typeFilter) &&
-          (!state.specFilter || p.specification === state.specFilter),
-      ),
+          (!state.specFilter || p.specification === state.specFilter) &&
+          (!search || p.title.toLowerCase().includes(search)),
+      )
+    },
   },
   mutations: {
     setItems(state, items: Product[]) {
@@ -42,6 +47,9 @@ export const products: Module<ProductsState, RootState> = {
     setSpecFilter(state, spec: string | null) {
       state.specFilter = spec
     },
+    removeItem(state, id: number) {
+      state.items = state.items.filter((p) => p.id !== id)
+    },
   },
   actions: {
     async fetch({ commit }) {
@@ -52,6 +60,10 @@ export const products: Module<ProductsState, RootState> = {
       } finally {
         commit('setLoading', false)
       }
+    },
+    async remove({ commit }, payload: { orderId: number; productId: number }) {
+      await api.deleteProduct(payload.orderId, payload.productId)
+      commit('removeItem', payload.productId)
     },
   },
 }
