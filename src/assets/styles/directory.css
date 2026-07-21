@@ -93,7 +93,8 @@
     color 0.15s ease;
 }
 .dir-btn:hover {
-  color: var(--c-primary-dark);
+  background: var(--c-primary);
+  color: #fff;
 }
 .dir-btn--danger:hover {
   background: var(--c-danger);
