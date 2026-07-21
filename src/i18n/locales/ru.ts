@@ -44,6 +44,7 @@ export default {
     used: 'Б / У',
     from: 'с',
     to: 'по',
+    confirmDelete: 'Удалить этот продукт?',
   },
   list: {
     empty: 'Нет продуктов по выбранным фильтрам.',

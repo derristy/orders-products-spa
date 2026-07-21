@@ -44,6 +44,7 @@ export default {
     used: 'Used',
     from: 'from',
     to: 'to',
+    confirmDelete: 'Delete this product?',
   },
   list: {
     empty: 'No products match the selected filters.',

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import draggable from 'vuedraggable'
 import type { Order, Product } from '@/types'
 import type { NewProduct } from '@/api'
@@ -8,8 +9,10 @@ import OrderRow from './OrderRow.vue'
 import OrderDetails from './OrderDetails.vue'
 import DeleteOrderModal from './DeleteOrderModal.vue'
 import AddProductModal from './AddProductModal.vue'
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 
 const store = useStore()
+const { t } = useI18n()
 
 const orders = computed<Order[]>(() => store.getters['orders/visible'])
 const activeId = computed<number | null>(() => store.state.orders.activeOrderId)
@@ -28,6 +31,7 @@ async function onReorder() {
 }
 
 const orderToDelete = ref<Order | null>(null)
+const productToDelete = ref<Product | null>(null)
 const showAddProduct = ref(false)
 
 function select(id: number) {
@@ -49,11 +53,13 @@ async function addProduct(data: NewProduct) {
   await store.dispatch('orders/addProduct', { orderId: activeId.value, data })
   showAddProduct.value = false
 }
-async function deleteProduct(product: Product) {
+async function confirmDeleteProduct() {
+  if (!productToDelete.value) return
   await store.dispatch('orders/removeProduct', {
-    orderId: product.order,
-    productId: product.id,
+    orderId: productToDelete.value.order,
+    productId: productToDelete.value.id,
   })
+  productToDelete.value = null
 }
 </script>
 
@@ -91,7 +97,7 @@ async function deleteProduct(product: Product) {
           :order="activeOrder"
           @close="closeDetails"
           @add-product="showAddProduct = true"
-          @delete-product="deleteProduct"
+          @delete-product="productToDelete = $event"
         />
       </div>
     </Transition>
@@ -107,6 +113,15 @@ async function deleteProduct(product: Product) {
 
     <Transition name="fade">
       <AddProductModal v-if="showAddProduct" @add="addProduct" @cancel="showAddProduct = false" />
+    </Transition>
+
+    <Transition name="fade">
+      <ConfirmDialog
+        v-if="productToDelete"
+        :message="t('product.confirmDelete')"
+        @confirm="confirmDeleteProduct"
+        @cancel="productToDelete = null"
+      />
     </Transition>
   </div>
 </template>
