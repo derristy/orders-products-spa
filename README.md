@@ -1,5 +1,10 @@
 # Orders & Products SPA (Inventory)
 
+> ### 🔗 Демо: **https://orders-products-spa.derristy.com**
+> **Логин:** `admin` &nbsp;·&nbsp; **Пароль:** `admin`
+>
+> Развёрнуто на VPS в Docker: HTTPS, REST API, WebSocket, данные в SQLite.
+
 SPA для складского учёта: **Приходы (Orders)** и **Продукты (Products)**. Тестовое задание.
 
 Список приходов с раскрытием карточки и списком продуктов, попап удаления, страница
