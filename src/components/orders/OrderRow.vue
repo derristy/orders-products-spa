@@ -180,4 +180,38 @@ const defaultSymbol = computed(
   color: var(--c-text-muted);
   text-align: center;
 }
+
+@media (max-width: 600px) {
+  .order-row:not(.order-row--compact) {
+    grid-template-columns: 40px 1fr 1fr 34px;
+    grid-template-areas:
+      'icon title title trash'
+      'count dates total total';
+    gap: 10px 12px;
+    padding: 14px 16px;
+  }
+  .order-row:not(.order-row--compact) .order-row__icon {
+    grid-area: icon;
+  }
+  .order-row:not(.order-row--compact) .order-row__title {
+    grid-area: title;
+    font-size: 15px;
+    align-self: center;
+  }
+  .order-row:not(.order-row--compact) .order-row__delete {
+    grid-area: trash;
+  }
+  .order-row:not(.order-row--compact) .order-row__count {
+    grid-area: count;
+    text-align: left;
+  }
+  .order-row:not(.order-row--compact) .order-row__dates {
+    grid-area: dates;
+    text-align: left;
+  }
+  .order-row:not(.order-row--compact) .order-row__totals {
+    grid-area: total;
+    text-align: right;
+  }
+}
 </style>

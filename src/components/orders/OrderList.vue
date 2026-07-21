@@ -145,4 +145,11 @@ async function deleteProduct(product: Product) {
     grid-template-columns: 1fr;
   }
 }
+
+/* On phones, opening an order shows only its details (close returns to the list) */
+@media (max-width: 768px) {
+  .order-list--expanded .order-list__col {
+    display: none;
+  }
+}
 </style>
